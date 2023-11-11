@@ -10,25 +10,28 @@
 import os
 from datetime import datetime
 import sys
+import json
 
-# Variável para inserir manualmente um valor de pluviosidade previsto par o dia
-chuva_hoje = 8
+json_file_path = 'variables.json'  # Replace with the actual filename
+with open(json_file_path, 'r') as json_file:
+    dados = json.load(json_file)
 
-# Variável para inserir manualmente a leitura realizada por um sensor físico em um bueiro
-bueiro_entupido = True
+# Extract chuva_hoje and bueiro_entupido values from the JSON data
+chuva_hoje = dados['valores_chuva']['Mooca']  # Replace 'Mooca' with the desired key
+bueiro_entupido = dados['outras_variaveis']['bueiro_entupido']
 
 # Dicionário que associa bairros a meses de risco de alagamento
 bairros_alagados = {
     'Mooca': 9,
     'Vila Prudente': 14,
-    'Tatuapé': 8,
+    'Tatuape': 8,
     'Belenzinho': 15,
     'Bela Vista': 12,
     'Casa Verde': 7,
     'Vila Leopoldina': 13,
     'Cidade Jardim': 11,
-    'Chácara Santo Antônio': 9,
-    'Capão Redondo': 10
+    'Chacara Santo Antonio': 9,
+    'Capao Redondo': 10
 }
 
 # Listas para armazenar histórico de pesquisa de bairros
@@ -63,6 +66,9 @@ def consultar_bairro(bairro_user):
     Args:
         bairro_user (str): O nome do bairro a ser consultado.
     """
+    if bairro_user in dados['valores_chuva']:
+        chuva_hoje = dados['valores_chuva'][bairro_user]
+    
     if bairro_user in bairros_alagados:
         if bairros_alagados[bairro_user] <= chuva_hoje:
             print('')
@@ -71,7 +77,7 @@ def consultar_bairro(bairro_user):
             traco()
             print('')
             bairro_pesquisados_alagados.append(bairro_user)
-        elif (bairros_alagados[bairro_user]*0.75) <= chuva_hoje and bueiro_entupido == True:
+        elif (bairros_alagados[bairro_user]*0.75) >= chuva_hoje and bueiro_entupido == True:
             print('')
             traco()
             print(f'O bairro {bairro_user} VAI ALAGAR hoje devido a fortes chuvas. Tome cuidado e evite a região!')

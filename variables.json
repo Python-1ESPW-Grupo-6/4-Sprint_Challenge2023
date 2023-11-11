@@ -1,17 +1,17 @@
 {
     "valores_chuva": {
-        "Mooca": 9,
-        "Vila Prudente": 10,
-        "Tatuapé": 9,
+        "Mooca": 5,
+        "Vila Prudente": 20,
+        "Tatuape": 9,
         "Belenzinho": 11,
         "Bela Vista": 10,
         "Casa Verde": 9,
         "Vila Leopoldina": 11,
         "Cidade Jardim": 10,
-        "Chácara Santo Antônio": 9,
-        "Capão Redondo": 11
+        "Chacara Santo Antonio": 9,
+        "Capao Redondo": 11
     },
     "outras_variaveis": {
-        "bueiro_entupido": true
+        "bueiro_entupido": false
     }
 }
