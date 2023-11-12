@@ -1,11 +1,13 @@
-#lista de bairros que tendem a alagar em época de chuva intesa (verão)
-# https://imoveis.estadao.com.br/noticias/saiba-quais-sao-os-bairros-mais-suscetiveis-a-enchentes-e-alagamentos-em-sao-paulo/
+# ESPW
 
 # Fabrício Saavedra - 97631
 # Guilherme Akio - 98582
 # Guilherme Morais - 551981
 # Matheus Motta - 550352
 # Vinicius Buzato - 99125
+
+#lista de bairros que tendem a alagar em época de chuva intesa (verão)
+# https://imoveis.estadao.com.br/noticias/saiba-quais-sao-os-bairros-mais-suscetiveis-a-enchentes-e-alagamentos-em-sao-paulo/
 
 import os
 from datetime import datetime
@@ -20,7 +22,7 @@ with open(json_file_path, 'r') as json_file:
 chuva_hoje = dados['valores_chuva']['Mooca']  # Replace 'Mooca' with the desired key
 bueiro_entupido = dados['outras_variaveis']['bueiro_entupido']
 
-# Dicionário que associa bairros a meses de risco de alagamento
+# Dicionário que associa bairros a índice pluviometrico para alagar
 bairros_alagados = {
     'Mooca': 9,
     'Vila Prudente': 14,
@@ -49,7 +51,7 @@ def traco():
     """
     Imprime uma linha de traço para formatação.
     """
-    print('-' * 40)
+    print('-' * 50)
 
 def error():
     """
@@ -132,7 +134,8 @@ def consultar_bairros():
             menu2 = int(input('Insira o número referente ao local que quer ir: '))
             print('')
             if menu2 == 1:
-                print(f'Bairros cadastrados: {list(bairros_alagados.keys())}')
+                for bairro in bairros_alagados.keys():
+                    print('-',bairro)
                 print('')
                 bairro_user = input('Digite o bairro que queira consultar: ').title()
                 consultar_bairro(bairro_user)
@@ -244,10 +247,10 @@ def sair():
                         arquivo.write('Bairros pesquisados:\n\n')
                         if bairro_pesquisados:
                             for bairro in bairro_pesquisados:
-                                arquivo.write(f'{bairro} não vai alagar!\n')
+                                arquivo.write(f'{bairro}:\nStatus: não vai alagar!\n')
                         if bairro_pesquisados_alagados:
                             for bairro in bairro_pesquisados_alagados:
-                                arquivo.write(f'{bairro} vai alagar!\n')
+                                arquivo.write(f'{bairro}:\nStatus: vai alagar!\n')
                     
                     if notificacao_bairro:
                         arquivo.write('\nNotificações adicionadas:\n\n')
@@ -255,17 +258,17 @@ def sair():
                             arquivo.write(f'Bairro: {bairro}\n')
                             arquivo.write(f'Causa: {causa}\n\n')
             else:
-                with open(nome_arquivo, 'w') as arquivo:
+                with open(nome_arquivo, 'w',encoding='utf-8') as arquivo:
                     arquivo.write(nova_atualização)
 
                     if bairro_pesquisados or bairro_pesquisados_alagados:
                         arquivo.write('Bairros pesquisados:\n\n')
                         if bairro_pesquisados:
                             for bairro in bairro_pesquisados:
-                                arquivo.write(f'{bairro} não vai alagar!\n')
+                                arquivo.write(f'{bairro}:\nStatus: não vai alagar!\n')
                         if bairro_pesquisados_alagados:
                             for bairro in bairro_pesquisados_alagados:
-                                arquivo.write(f'{bairro} vai alagar!\n')
+                                arquivo.write(f'{bairro}:\nStatus: vai alagar!\n')
                     
                     if notificacao_bairro:
                         arquivo.write('\nNotificações adicionadas:\n\n')
@@ -274,9 +277,9 @@ def sair():
                             arquivo.write(f'Causa: {causa}\n\n')
                     
             if bairro_pesquisados or bairro_pesquisados_alagados:
-                traco()
+                
                 print(f'Bairros pesquisados: ')
-                traco()
+                
                 if bairro_pesquisados:
                     for bairro in bairro_pesquisados:
                         print(f'{bairro} não vai alagar!')
